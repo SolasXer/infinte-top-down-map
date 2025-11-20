@@ -25,7 +25,17 @@ export class Main extends Component {
             const tile = instantiate(this.tilePf);
             this.camera.addChild(tile);
         }
-        this.layoutTiles();
+
+        const startX = this.camera.x - (Col / 2 * TileSize) + TileSize / 2;
+        const startY = this.camera.y + (Row / 2 * TileSize) - TileSize / 2;
+        for (let r = 0; r < Row; r++) {
+            for (let c = 0; c < Col; c++) {
+                const tile = this.camera.children[r * Col + c];
+                const x = startX + c * TileSize;
+                const y = startY - r * TileSize;
+                tile.setPosition(x, y);
+            }
+        }
     }
 
     protected onEnable(): void {
@@ -66,20 +76,7 @@ export class Main extends Component {
         }
     }
 
-    private layoutTiles() {
-        const startX = this.camera.x - (Col / 2 * TileSize) + TileSize / 2;
-        const startY = this.camera.y + (Row / 2 * TileSize) - TileSize / 2;
-        for (let r = 0; r < Row; r++) {
-            for (let c = 0; c < Col; c++) {
-                const tile = this.camera.children[r * Col + c];
-                const x = startX + c * TileSize;
-                const y = startY - r * TileSize;
-                tile.setPosition(x, y);
-            }
-        }
-    }
-
-    onKeyDown(e: EventKeyboard) {
+    private onKeyDown(e: EventKeyboard) {
         switch (e.keyCode) {
             case KeyCode.KEY_A:
                 this.velocity.x = - MoveSpeed;
@@ -98,7 +95,7 @@ export class Main extends Component {
         }
     }
 
-    onKeyUp(e: EventKeyboard) {
+    private onKeyUp(e: EventKeyboard) {
         switch (e.keyCode) {
             case KeyCode.KEY_A:
                 this.velocity.x = 0;
@@ -117,9 +114,7 @@ export class Main extends Component {
         }
     }
 
-    getBiome(value: number): string {
-        // 柏林噪声通常返回 -1 到 1，我们需要标准化到 0 到 1 附近便于判断
-        // 这里简单处理，value 大概在 -1~1 之间
+    private getBiome(value: number): string {
         if (value < -0.2) return '#1e90ff'; // 深海
         if (value < -0.05) return '#00bfff'; // 浅水
         if (value < 0.05) return '#f4a460'; // 沙滩
