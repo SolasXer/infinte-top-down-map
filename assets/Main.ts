@@ -1,5 +1,5 @@
 import { _decorator, Color, Component, EventKeyboard, Input, input, instantiate, KeyCode, Node, Prefab, Sprite, Vec2 } from 'cc';
-import { Perlin } from './Berlin';
+import { Perlin } from './Perlin';
 const { ccclass, property } = _decorator;
 
 const Row = 6;
